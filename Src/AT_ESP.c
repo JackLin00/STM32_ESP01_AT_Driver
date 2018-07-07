@@ -1,6 +1,4 @@
 #include "AT_ESP.h"
-#include "./usart2/bsp_usart2.h"
-#include "./systick/bsp_systick.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -13,13 +11,16 @@ const char ResponseOK[] = "OK\r\n";
 const char SendResponse[] = "OK\r\n> ";
 
 
-#define ESP_UART_CONFIG        USART2_Config
-#define SendMessageToESP       USART2_SendString
-#define SendMessageToESP2      USART2_SendData
-#define Delay_ms               Delay_s 
+#define ESP_UART_CONFIG        //ä½ å®žçŽ°çš„å’ŒESP01å¯¹æŽ¥çš„ä¸²å£åˆå§‹åŒ–å‡½æ•°
+#define SendMessageToESP       //ä½ å®žçŽ°çš„åŸºäºŽå­—ç¬¦ä¸²çš„ä¸²å£å‘é€å‡½æ•°
+#define SendMessageToESP2      //ä½ å®žçŽ°çš„åŸºäºŽå‘é€é•¿åº¦çš„ä¸²å£å‘é€å‡½æ•°
+#define Delay_ms               //ä½ å®žçŽ°çš„æ¯«ç§’çº§çš„å»¶æ—¶å‡½æ•° 
 
+/*
+å› ä¸ºæˆ‘æµ‹è¯•æ˜¯ç”¨USART2ä½œä¸ºå’ŒESP01å¯¹æŽ¥çš„ä¸²å£ï¼Œæ‰€ä»¥ä»¥ä¸‹éƒ½æ˜¯ç”¨USART2ï¼Œè¯·æ ¹æ®è‡ªå·±çš„æƒ…å†µè‡ªè¡Œä¿®æ”¹ã€‚
+*/
 
-//ÓÃÖÐ¶Ï½ÓÊÕESPµÄ·´À¡ÐÅÏ¢
+//ç”¨ä¸­æ–­æŽ¥æ”¶ESPçš„åé¦ˆä¿¡æ¯
 void USART2_IRQHandler(void)
 {
 	if(USART_GetFlagStatus(USART2, USART_FLAG_ORE) == SET)
@@ -41,7 +42,7 @@ void USART2_IRQHandler(void)
 }       
 /*
 -------------------------------------------------------------------------------
-ÏÂÃæµÄÊÇÒ»Ð©»ù´¡º¯Êý
+ä¸‹é¢çš„æ˜¯ä¸€äº›åŸºç¡€å‡½æ•°
 -------------------------------------------------------------------------------
 */
 
@@ -87,23 +88,23 @@ static char CheckResponse()
 
 /*
 -------------------------------------------------------------------------------
-»ù´¡º¯Êý½áÊø
+åŸºç¡€å‡½æ•°ç»“æŸ
 -------------------------------------------------------------------------------
 */
 
 /*
 -------------------------------------------------------------------------------
-½ÓÏÂÀ´ÊÇESP01µÄAPI
+æŽ¥ä¸‹æ¥æ˜¯ESP01çš„API
 -------------------------------------------------------------------------------
 */
 
 
 /*
-º¯ÊýËµÃ÷£º¼ì²âµ¥Æ¬»úºÍESP-01ÊÇ·ñÕýÈ·Í¨ÐÅ
-²ÎÊýËµÃ÷£ºvoid
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºvoid
-ÒÑ²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šæ£€æµ‹å•ç‰‡æœºå’ŒESP-01æ˜¯å¦æ­£ç¡®é€šä¿¡
+å‚æ•°è¯´æ˜Žï¼švoid
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼švoid
+å·²æµ‹è¯•
 */
 u8 CheckEsp(void)
 {
@@ -117,11 +118,11 @@ u8 CheckEsp(void)
 }
 
 /*
-º¯ÊýËµÃ÷£ºÉèÖÃESP-01µÄµ±Ç°µÄWIFIÄ£Ê½
-²ÎÊýËµÃ÷£ºmodeÊÇÏëÒªÉèÖÃµÄÄ£Ê½£¬¾ßÌåÄ£Ê½Ïê¼ûATÖ¸ÁîÊÖ²á
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºvoid
-ÒÑ²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šè®¾ç½®ESP-01çš„å½“å‰çš„WIFIæ¨¡å¼
+å‚æ•°è¯´æ˜Žï¼šmodeæ˜¯æƒ³è¦è®¾ç½®çš„æ¨¡å¼ï¼Œå…·ä½“æ¨¡å¼è¯¦è§ATæŒ‡ä»¤æ‰‹å†Œ
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼švoid
+å·²æµ‹è¯•
 */
 u8 SetEspMode(char mode)
 {
@@ -140,11 +141,11 @@ u8 SetEspMode(char mode)
 }
 
 /*
-º¯ÊýËµÃ÷£ºÈÃESP-01Á¬½ÓÖ¸¶¨WIFI
-²ÎÊýËµÃ÷£ºSSID:ÓûÒªÁ¬½ÓµÄWIFIÃû£¬Passwd:¶ÔÓ¦µÄWIFIÃÜÂë
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºvoid
-ÒÑ²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šè®©ESP-01è¿žæŽ¥æŒ‡å®šWIFI
+å‚æ•°è¯´æ˜Žï¼šSSID:æ¬²è¦è¿žæŽ¥çš„WIFIåï¼ŒPasswd:å¯¹åº”çš„WIFIå¯†ç 
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼švoid
+å·²æµ‹è¯•
 */
 u8 ConnectWiFi(char *SSID,char *Passwd)
 {
@@ -161,11 +162,11 @@ u8 ConnectWiFi(char *SSID,char *Passwd)
 	return 0;
 }
 /*
-º¯ÊýËµÃ÷£º»ñÈ¡ESP-01µÄµ±Ç°µÄIPaddress£¬×¢Òâ±ØÐëÈÃESP-01Á¬½ÓWIFIºóÊ¹ÓÃ
-²ÎÊýËµÃ÷£ºRecvBuffer:½ÓÊÕ·µ»ØµÄIPaddressµÄBuffer
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºvoid
-ÒÑ²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šèŽ·å–ESP-01çš„å½“å‰çš„IPaddressï¼Œæ³¨æ„å¿…é¡»è®©ESP-01è¿žæŽ¥WIFIåŽä½¿ç”¨
+å‚æ•°è¯´æ˜Žï¼šRecvBuffer:æŽ¥æ”¶è¿”å›žçš„IPaddressçš„Buffer
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼švoid
+å·²æµ‹è¯•
 */
 u8 GetIpAddress(char *RecvBuffer)
 {
@@ -189,11 +190,11 @@ u8 GetIpAddress(char *RecvBuffer)
 }
 
 /*
-º¯ÊýËµÃ÷£º»ñÈ¡ESP-01µÄMACaddress
-²ÎÊýËµÃ÷£ºRecvBuffer:½ÓÊÕ·µ»ØµÄMACaddressµÄBuffer
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºvoid
-ÒÑ²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šèŽ·å–ESP-01çš„MACaddress
+å‚æ•°è¯´æ˜Žï¼šRecvBuffer:æŽ¥æ”¶è¿”å›žçš„MACaddressçš„Buffer
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼švoid
+å·²æµ‹è¯•
 */
 u8 GetMACaddress(char *Recvbuffer)
 {
@@ -219,11 +220,11 @@ u8 GetMACaddress(char *Recvbuffer)
 }
 
 /*
-º¯ÊýËµÃ÷£º¶Ï¿ªESP-01µÄÁ¬½ÓµÄWIFI
-²ÎÊýËµÃ÷£ºvoid
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºvoid
-ÒÑ²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šæ–­å¼€ESP-01çš„è¿žæŽ¥çš„WIFI
+å‚æ•°è¯´æ˜Žï¼švoid
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼švoid
+å·²æµ‹è¯•
 */
 u8 DisconnectWiFi()
 {
@@ -236,12 +237,12 @@ u8 DisconnectWiFi()
 	return 0;
 }
 /*
-º¯ÊýËµÃ÷£ºÁ¬½ÓÖ¸¶¨µÄTCPServer»òÕßUDPServer
-²ÎÊýËµÃ÷£ºIPAddress£ºTCPServer»òÕßUDPServerµÄIPAddress£¬port£º¶ÔÓ¦·þÎñÆ÷µÄ¶Ë¿Ú
-					mode:Á¬½ÓServerµÄÀàÐÍ£¬0ÎªTCP,1ÎªUDP
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºvoid
-ÒÑ²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šè¿žæŽ¥æŒ‡å®šçš„TCPServeræˆ–è€…UDPServer
+å‚æ•°è¯´æ˜Žï¼šIPAddressï¼šTCPServeræˆ–è€…UDPServerçš„IPAddressï¼Œportï¼šå¯¹åº”æœåŠ¡å™¨çš„ç«¯å£
+					mode:è¿žæŽ¥Serverçš„ç±»åž‹ï¼Œ0ä¸ºTCP,1ä¸ºUDP
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼švoid
+å·²æµ‹è¯•
 */
 u8 ConnectServer(char *IPAddress,char *port,char mode)
 {
@@ -280,11 +281,11 @@ u8 ConnectServer(char *IPAddress,char *port,char mode)
 }
 
 /*
-º¯ÊýËµÃ÷£º¹Ø±ÕÒÑÁ¬½ÓµÄTCPServer or UDPServer
-²ÎÊýËµÃ÷£ºvoid
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºvoid
-ÒÑ²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šå…³é—­å·²è¿žæŽ¥çš„TCPServer or UDPServer
+å‚æ•°è¯´æ˜Žï¼švoid
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼švoid
+å·²æµ‹è¯•
 */
 u8 CloseTCPOrUDPConnect(void)
 {
@@ -298,13 +299,13 @@ u8 CloseTCPOrUDPConnect(void)
 }
 
 /*
-º¯ÊýËµÃ÷£ºÏòÒÑ¾­Á¬½ÓµÄSever·¢ËÍ×Ö·û´®Êý¾Ý
-²ÎÊýËµÃ÷£ºData:Òª·¢ËÍµÄ×Ö·û´®ÐÅÏ¢Ö¸Õë
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºÕâÀïµÄServer¿ÉÒÔÊÇTCPServer»òÕßUDPServer£¬ÊÓºõÓÚÄãÖ®Ç°Á¬½ÓµÄServer
-					¼´Èç¹ûÄãÔÚÊ¹ÓÃÕâ¸öº¯ÊýÖ®Ç°Ê¹ÓÃµÄÊÇTCPServer£¬ÄÇÃ´¸Ãº¯Êý¾ÍÏòÄãËùÁ¬½ÓµÄ
-					TCPServer·¢ËÍ×Ö·û´®Êý¾Ý£»µ±ÊÇUDPServer£¬Ò²ÊÇÈç´Ë¡£
-ÒÑ²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šå‘å·²ç»è¿žæŽ¥çš„Severå‘é€å­—ç¬¦ä¸²æ•°æ®
+å‚æ•°è¯´æ˜Žï¼šData:è¦å‘é€çš„å­—ç¬¦ä¸²ä¿¡æ¯æŒ‡é’ˆ
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼šè¿™é‡Œçš„Serverå¯ä»¥æ˜¯TCPServeræˆ–è€…UDPServerï¼Œè§†ä¹ŽäºŽä½ ä¹‹å‰è¿žæŽ¥çš„Server
+					å³å¦‚æžœä½ åœ¨ä½¿ç”¨è¿™ä¸ªå‡½æ•°ä¹‹å‰ä½¿ç”¨çš„æ˜¯TCPServerï¼Œé‚£ä¹ˆè¯¥å‡½æ•°å°±å‘ä½ æ‰€è¿žæŽ¥çš„
+					TCPServerå‘é€å­—ç¬¦ä¸²æ•°æ®ï¼›å½“æ˜¯UDPServerï¼Œä¹Ÿæ˜¯å¦‚æ­¤ã€‚
+å·²æµ‹è¯•
 */
 u8 SendStringDataToServer(char *Data)
 {
@@ -327,13 +328,13 @@ u8 SendStringDataToServer(char *Data)
 }
 
 /*
-º¯ÊýËµÃ÷£ºÏòÒÑ¾­Á¬½ÓµÄSever·¢ËÍ·Ç×Ö·û´®ÐÅÏ¢(·¢ËÍÀýÈç½á¹¹ÌåµÈÄÚ´æ¶ÔÏóÐÅÏ¢)
-²ÎÊýËµÃ÷£ºData:Òª·¢ËÍÊý¾ÝµÄÍ·Ö¸Õë£¬len£º·¢ËÍÊý¾Ý³¤¶È
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºÕâÀïµÄServer¿ÉÒÔÊÇTCPServer»òÕßUDPServer£¬ÊÓºõÓÚÄãÖ®Ç°Á¬½ÓµÄServer
-					¼´Èç¹ûÄãÔÚÊ¹ÓÃÕâ¸öº¯ÊýÖ®Ç°Ê¹ÓÃµÄÊÇTCPServer£¬ÄÇÃ´¸Ãº¯Êý¾ÍÏòÄãËùÁ¬½ÓµÄ
-					TCPServer·¢ËÍ×Ö·û´®Êý¾Ý£»µ±ÊÇUDPServer£¬Ò²ÊÇÈç´Ë¡£
-ÒÑ²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šå‘å·²ç»è¿žæŽ¥çš„Severå‘é€éžå­—ç¬¦ä¸²ä¿¡æ¯(å‘é€ä¾‹å¦‚ç»“æž„ä½“ç­‰å†…å­˜å¯¹è±¡ä¿¡æ¯)
+å‚æ•°è¯´æ˜Žï¼šData:è¦å‘é€æ•°æ®çš„å¤´æŒ‡é’ˆï¼Œlenï¼šå‘é€æ•°æ®é•¿åº¦
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼šè¿™é‡Œçš„Serverå¯ä»¥æ˜¯TCPServeræˆ–è€…UDPServerï¼Œè§†ä¹ŽäºŽä½ ä¹‹å‰è¿žæŽ¥çš„Server
+					å³å¦‚æžœä½ åœ¨ä½¿ç”¨è¿™ä¸ªå‡½æ•°ä¹‹å‰ä½¿ç”¨çš„æ˜¯TCPServerï¼Œé‚£ä¹ˆè¯¥å‡½æ•°å°±å‘ä½ æ‰€è¿žæŽ¥çš„
+					TCPServerå‘é€å­—ç¬¦ä¸²æ•°æ®ï¼›å½“æ˜¯UDPServerï¼Œä¹Ÿæ˜¯å¦‚æ­¤ã€‚
+å·²æµ‹è¯•
 */
 u8 SendDataToServer(char *Data,int len)
 {
@@ -354,11 +355,11 @@ u8 SendDataToServer(char *Data,int len)
 }
 
 /*
-º¯ÊýËµÃ÷£ºÈÃESP01½øÈëmodem_sleep×´Ì¬
-²ÎÊýËµÃ÷£ºvoid
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºvoid
-´ý²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šè®©ESP01è¿›å…¥modem_sleepçŠ¶æ€
+å‚æ•°è¯´æ˜Žï¼švoid
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼švoid
+å¾…æµ‹è¯•
 */
 u8 ModemSleep_Getinto(void)
 {
@@ -372,11 +373,11 @@ u8 ModemSleep_Getinto(void)
 }
 
 /*
-º¯ÊýËµÃ÷£ºÈÃESP01ÍË³ömodem_sleep×´Ì¬
-²ÎÊýËµÃ÷£ºvoid
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºvoid
-´ý²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šè®©ESP01é€€å‡ºmodem_sleepçŠ¶æ€
+å‚æ•°è¯´æ˜Žï¼švoid
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼švoid
+å¾…æµ‹è¯•
 */
 u8 ModemSleep_Quit(void)
 {
@@ -390,15 +391,15 @@ u8 ModemSleep_Quit(void)
 }
 
 /*
-º¯ÊýËµÃ÷£ºÈÃESP01½øÈëDeep_Sleep×´Ì¬
-²ÎÊýËµÃ÷£ºvoid
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£º¸ÃÄ£Ê½ÏÂÖ»ÄÜÍ¨¹ýÓ²¼þ»½ÐÑ£¬ÏêÏ¸ËµÃ÷²é¿´¹Ù·½ATÖ¸Áî
-´ý²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šè®©ESP01è¿›å…¥Deep_SleepçŠ¶æ€
+å‚æ•°è¯´æ˜Žï¼švoid
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼šè¯¥æ¨¡å¼ä¸‹åªèƒ½é€šè¿‡ç¡¬ä»¶å”¤é†’ï¼Œè¯¦ç»†è¯´æ˜ŽæŸ¥çœ‹å®˜æ–¹ATæŒ‡ä»¤
+å¾…æµ‹è¯•
 */
 u8 DeepSleep_Getinto(void)
 {
-	SendEspCommand("AT+GSLP=0\r\n");   //µÈÓÚ0µÄÒâÒåÊÇESP³ýÁËÓ²¼þ»½ÐÑ£¬ÆäËû²»»á»½ÐÑ.
+	SendEspCommand("AT+GSLP=0\r\n");   //ç­‰äºŽ0çš„æ„ä¹‰æ˜¯ESPé™¤äº†ç¡¬ä»¶å”¤é†’ï¼Œå…¶ä»–ä¸ä¼šå”¤é†’.
 	delay();
 	if(CheckResponse())
 	{
@@ -410,16 +411,16 @@ u8 DeepSleep_Getinto(void)
 
 
 /*
-º¯ÊýËµÃ÷£ºesp8266½á¹¹ÌåµÄ³õÊ¼»¯ºÍ¶ÔÓ¦UARTµÄ³õÊ¼»¯
-²ÎÊýËµÃ÷£ºIPAddress£ºTCPServerµÄIPAddress£¬port£º¶ÔÓ¦·þÎñÆ÷µÄ¶Ë¿Ú
-·µ»ØÖµËµÃ÷:º¯Êý·µ»ØÖµÎª1ÊÇsuccess,0Îªfail
-×¢ÒâÊÂÏî£ºvoid
-ÒÑ²âÊÔ
+å‡½æ•°è¯´æ˜Žï¼šesp8266ç»“æž„ä½“çš„åˆå§‹åŒ–å’Œå¯¹åº”UARTçš„åˆå§‹åŒ–
+å‚æ•°è¯´æ˜Žï¼šIPAddressï¼šTCPServerçš„IPAddressï¼Œportï¼šå¯¹åº”æœåŠ¡å™¨çš„ç«¯å£
+è¿”å›žå€¼è¯´æ˜Ž:å‡½æ•°è¿”å›žå€¼ä¸º1æ˜¯success,0ä¸ºfail
+æ³¨æ„äº‹é¡¹ï¼švoid
+å·²æµ‹è¯•
 */
 void esp8266Init(esp8266 *handle)
 {
-	ESP_UART_CONFIG();                  //³õÊ¼»¯ESP-01¶ÔÓ¦µÄ´®¿Ú
-	handle->CheckESP = CheckEsp;        //ÕâÐ©ÊÇÈÃº¯ÊýÖ¸Õë¶ÔÓ¦ÏàÓ¦µÄº¯Êý
+	ESP_UART_CONFIG();                  //åˆå§‹åŒ–ESP-01å¯¹åº”çš„ä¸²å£
+	handle->CheckESP = CheckEsp;        //è¿™äº›æ˜¯è®©å‡½æ•°æŒ‡é’ˆå¯¹åº”ç›¸åº”çš„å‡½æ•°
 	handle->SetEspMode = SetEspMode;
 	handle->ConnectWiFi = ConnectWiFi;
 	handle->DisconnectWiFi = DisconnectWiFi;
