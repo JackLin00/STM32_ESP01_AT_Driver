@@ -18,33 +18,33 @@
     4.毫秒级的延时函数。一般用SYSTICK来实现
     
   
-打开AT_ESP.c，在以下宏定义填写上述所需要的函数：
+    打开AT_ESP.c，在以下宏定义填写上述所需要的函数：
     #define ESP_UART_CONFIG        //和ESP01对接的串口初始化函数
     #define SendMessageToESP       //基于字符串的串口发送函数
     #define SendMessageToESP2      //基于发送长度的串口发送函数
     #define Delay_ms               //毫秒级的延时函数
     
-可能有人会对要求2，3的所说的东西感到疑惑。
-在这里，我举一个例子：
-首先是一个串口字节发送函数
+    可能有人会对要求2，3的所说的东西感到疑惑。
+    在这里，我举一个例子：
+    首先是一个串口字节发送函数
     void USART?_SendByte(uint8_t data)
     {
-	    USART_SendData(USART?,data);
-	
-	    while(USART_GetFlagStatus(USART?,USART_FLAG_TXE) == RESET);
+    	USART_SendData(USART?,data);
+
+    	while(USART_GetFlagStatus(USART?,USART_FLAG_TXE) == RESET);
     }
-基于字符串的串口发送函数和基于发送长度的串口发送函数都需要这个串口字节发送函数.
-USART?是单片机和串口对接的串口，这里你需要这姓填写。
+    基于字符串的串口发送函数和基于发送长度的串口发送函数都需要这个串口字节发送函数.
+    USART?是单片机和串口对接的串口，这里你需要这姓填写。
     基于字符串的串口发送函数：
     void USART?_SendString(char *buffer)
     {
-	    while(*(buffer) != '\0')
-	    {
-		    USART?_SendByte(*(buffer));
-		    buffer++;
-	    }
+         while(*(buffer) != '\0')
+	 {
+	    USART?_SendByte(*(buffer));
+	    buffer++;
+         }
 	
-	    while(USART_GetFlagStatus(USART?,USART_FLAG_TC)==RESET);
+	 while(USART_GetFlagStatus(USART?,USART_FLAG_TC)==RESET);
     }
     基于发送长度的串口发送函数：
     void USART?_SendData(char *buffer,int len)
