@@ -24,4 +24,40 @@
     #define SendMessageToESP2      //基于发送长度的串口发送函数
     #define Delay_ms               //毫秒级的延时函数
     
-    可能有人
+    可能有人会对要求2，3的所说的东西感到疑惑。
+    在这里，我举一个例子：
+    首先是一个串口字节发送函数
+    void USART?_SendByte(uint8_t data)
+    {
+	    USART_SendData(USART?,data);
+	
+	    while(USART_GetFlagStatus(USART?,USART_FLAG_TXE) == RESET);
+    }
+    基于字符串的串口发送函数和基于发送长度的串口发送函数都需要这个串口字节发送函数.
+    USART?是单片机和串口对接的串口，这里你需要这姓填写。
+    基于字符串的串口发送函数：
+    void USART?_SendString(char *buffer)
+    {
+	    while(*(buffer) != '\0')
+	    {
+		    USART?_SendByte(*(buffer));
+		    buffer++;
+	    }
+	
+	    while(USART_GetFlagStatus(USART?,USART_FLAG_TC)==RESET);
+    }
+    基于发送长度的串口发送函数：
+    void USART?_SendData(char *buffer,int len)
+    {
+        while(len--)
+        {
+            USART2_SendByte(*(buffer));
+            buffer++;
+        }
+        while(USART_GetFlagStatus(USART?,USART_FLAG_TC)==RESET);
+    }
+    
+    或许你会感到疑惑为什么需要这2个几乎一样的函数，这是因为当你用ESP01向服务器发送结构体等内存对象的信息时，这些内存对象往往会存在0X00数据，如果你采用字符串发送的形式就会无法发送。或许你也会问，为什么不直接用基于发送长度的串口发送函数?这是因为基于字符串的串口发送函数存在大多数应用场景，如果全部采用USART?_SendData会十分影响代码的美观性，当然这也是个人认为。各位客官可以根据自己的需要来更改。
+    
+    
+    
