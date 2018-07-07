@@ -1,7 +1,7 @@
 #ifndef __AT_ESP_H__
 #define __AT_ESP_H__
 
-#include "stm32f4xx.h"
+
 
 
 #define u8 unsigned char
