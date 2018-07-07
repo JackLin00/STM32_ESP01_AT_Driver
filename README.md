@@ -59,6 +59,29 @@
     
    或许你会感到疑惑为什么需要这2个几乎一样的函数，这是因为当你用ESP01向服务器发送结构体等内存对象的信息时，这些内存对象往往会存在0X00数据，如果你采用字符串发送的形式就会无法发送。或许你也会问，为什么不直接用基于发送长度的串口发送函数?这是因为基于字符串的串口发送函数存在大多数应用场景，如果全部采用USART?_SendData会十分影响代码的美观性，当然这也是个人认为。各位客官可以根据自己的需要来更改。       
    
-   接下来介绍用于接收ESP01反馈信息的中断接收函数，它仅仅是用常规中断
+   接下来介绍用于接收ESP01反馈信息的中断接收函数，它仅仅是用常规中断的函数。
+   
+    void USART2_IRQHandler(void)
+    {
+	if(USART_GetFlagStatus(USART2, USART_FLAG_ORE) == SET)
+	{
+		USART_ReceiveData( USART2 );
+		USART_ClearITPendingBit(USART2,USART_IT_ORE);
+	}
+	if(USART_GetITStatus(USART2,USART_IT_RXNE) == SET)
+	{
+		if(ESPRxIndex < 128)
+		{
+			ESPBuffer[ESPRxIndex++] = USART_ReceiveData(USART2);
+		}
+		else
+		{
+			USART_ITConfig(USART2, USART_IT_RXNE, DISABLE);
+		}
+	}
+     }  
+     
+     
+    有一个缓冲区用来接收ESP01的反馈信息，我们在每次发完指令给ESP01后都会根据AT反馈的信息来判断我们的指令是否正确执行。具体可以看看CheckResponse()这个函数。而我们每次发送指令给ESP01之前都会清空一下这个缓冲区。
     
     
