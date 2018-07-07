@@ -82,6 +82,29 @@
      }  
      
      
-    有一个缓冲区用来接收ESP01的反馈信息，我们在每次发完指令给ESP01后都会根据AT反馈的信息来判断我们的指令是否正确执行。具体可以看看CheckResponse()这个函数。而我们每次发送指令给ESP01之前都会清空一下这个缓冲区。
+   有一个缓冲区用来接收ESP01的反馈信息，我们在每次发完指令给ESP01后都会根据AT反馈的信息来判断我们的指令是否正确执行。具体可以看看CheckResponse()这个函数。而我们每次发送指令给ESP01之前都会清空一下这个缓冲区。
+   
+   
+用法（在实现该库所需要的函数后）：
+    
+    第一步：新建一个结构体esp8266，调用esp8266Init()函数初始化这个结构体,并检查单片机能否正确和ESP01通信
+    '''
+    你别的需要初始化函数....
+    '''
+    esp8266 test;
+    esp8266Init(&test);
+    if(!test.CheckESP())
+    {
+    	printf("无法和ESP01正确通信........\r\n");
+    }
+    
+    第二步：Do what you want..._-_
+    例如，设置ESP01的WIFI模式，连接WIFI，连接TCPServer,向TCPServer发送字符串数据
+    test.SetEspMode(1);      //设置ESP01的WIFI模式为Station模式
+    test.ConnectWiFi(SSID,PassWD);   //连接指定WIFI
+    test.ConnectServer(IPaddress,Port,0);     //连接TCPServer
+    test.SendStringDataToServer("I AM JACK");   //向TCPServer发送"I AM JACK"字符串
+    
+    
     
     
