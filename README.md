@@ -4,9 +4,9 @@
 
 这是一个STM32的ESP-01驱动库，由于本人在这段时间对OOP十分感兴趣，所以本驱动将以我的蹩脚OOP写法来写这个ESP-01驱动库。请不要吐槽我的C语言OOP写法，我知道很烂，很不符合规范，但这个是我的第一个尝试，一个按照我心中的OOP想法。
 
-首先来介绍一下该仓库的结构：
-Examlpe:里面有Template和SomeUsage文件夹.Template里面包含一个完整的移植实例(基于STM32F4)，SomeUsage里面包含一些常用用法。
-Src:包含AT_ESP.c和AT_ESP.h，这是这个驱动库文件。
+首先来介绍一下该仓库的结构：      
+Examlpe:里面有Template和SomeUsage文件夹.Template里面包含一个完整的移植实例(基于STM32F4)，SomeUsage里面包含一些常用用法。     
+Src:包含AT_ESP.c和AT_ESP.h，这是这个驱动库文件。      
 
 我采用的是STM32的STD库来写程序，可能会让大部分用HAL的同学感到不友好。但是当你花几分钟来了解这个驱动库的原理后，你会发现只要移植一下几个关键函数，你就可以用HAL库来运行这个ESP-01驱动。
 
