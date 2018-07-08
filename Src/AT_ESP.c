@@ -359,7 +359,7 @@ u8 SendDataToServer(char *Data,int len)
 参数说明：void
 返回值说明:函数返回值为1是success,0为fail
 注意事项：void
-待测试
+已测试
 */
 u8 ModemSleep_Getinto(void)
 {
@@ -377,7 +377,7 @@ u8 ModemSleep_Getinto(void)
 参数说明：void
 返回值说明:函数返回值为1是success,0为fail
 注意事项：void
-待测试
+已测试
 */
 u8 ModemSleep_Quit(void)
 {
@@ -395,7 +395,7 @@ u8 ModemSleep_Quit(void)
 参数说明：void
 返回值说明:函数返回值为1是success,0为fail
 注意事项：该模式下只能通过硬件唤醒，详细说明查看官方AT指令
-待测试
+已测试
 */
 u8 DeepSleep_Getinto(void)
 {
